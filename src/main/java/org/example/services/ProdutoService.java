@@ -18,6 +18,9 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository repository;
 
+    @Autowired
+    private FornecedorRepository fornecedorRepository;
+
     public List<Produtos> findAll() {
         return repository.findAll();
     }
@@ -32,7 +35,16 @@ public class ProdutoService {
 
     public Produtos insert(Produtos obj) {
         try {
-            return obj = repository.save(obj);
+            if (obj.getFornecedor() != null && obj.getFornecedor().getId_fornecedor() != null) {
+                obj.setFornecedores(
+                        fornecedorRepository.findById(obj.getFornecedor().getId_fornecedor())
+                                .orElseThrow(() -> new ResourceNotFoundException(obj.getFornecedor().getId_fornecedor()))
+                );
+            } else {
+                throw new IllegalArgumentException("Fornecedor não informado");
+            }
+
+            return repository.save(obj);
         } catch (DataIntegrityViolationException e) {
             throw new ValueBigForAtributeException(e.getMessage());
         }
@@ -47,6 +59,13 @@ public class ProdutoService {
             produtos.setQtde_prod(obj.getQtde_prod());
             produtos.setPreco_prod(obj.getPreco_prod());
             produtos.setDescricao_prod(obj.getDescricao_prod());
+
+            if (obj.getFornecedor() != null && obj.getFornecedor().getId_fornecedor() != null) {
+                produtos.setFornecedores(
+                        fornecedorRepository.findById(obj.getFornecedor().getId_fornecedor())
+                                .orElseThrow(() -> new ResourceNotFoundException(obj.getFornecedor().getId_fornecedor()))
+                );
+            }
 
             return repository.save(produtos);
         } catch (DataIntegrityViolationException e) {

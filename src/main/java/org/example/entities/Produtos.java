@@ -44,8 +44,9 @@ public class Produtos {
     public Produtos() {
     }
 
-    public Produtos(Long id_produto, String nome_prod, String marca_prod, int qtde_prod, double preco_prod, String descricao_prod) {
+    public Produtos(Long id_produto, String nome_prod, String marca_prod, int qtde_prod, double preco_prod, String descricao_prod, Fornecedores fornecedores) {
         this.id_produto = id_produto;
+        this.fornecedores = fornecedores;
         this.nome_prod = nome_prod;
         this.marca_prod = marca_prod;
         this.qtde_prod = qtde_prod;
@@ -55,6 +56,14 @@ public class Produtos {
 
     public Long getId_produto() {
         return id_produto;
+    }
+
+    public Fornecedores getFornecedor() {
+        return fornecedores;
+    }
+
+    public void setFornecedores(Fornecedores fornecedores) {
+        this.fornecedores = fornecedores;
     }
 
     public void setId_produto(Long id_produto) {

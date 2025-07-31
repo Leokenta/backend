@@ -38,9 +38,9 @@ public class ProdutoResource {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Produtos> update(@Valid @RequestBody Produtos obj, @PathVariable Long id) {
-        obj.setId_produto(obj.getId_produto());
-        service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+        obj.setId_produto(id); // Corrigido aqui
+        Produtos updated = service.update(id, obj);
+        return ResponseEntity.ok().body(updated);
     }
 
     @DeleteMapping(value = "/{id}")
